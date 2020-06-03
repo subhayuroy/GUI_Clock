@@ -106,3 +106,27 @@ class clock:
             self.canvas.create_rectangle([[0,0], [width, height]], fill=self.bgcolor)
 
         self.redraw()
+    def setColors(self):
+        if self.showImage:
+            self.bgcolor = 'antique white'
+            self.timecolor = 'dark orange'
+            self.circlecolor = 'dark green'
+        else:
+            self.bgcolor = '#000000'
+            self.timecolor = '#ffffff'
+            self.circlecolor = '#808080'
+    def toggleImage(self, event):
+        if hasPIL and os.path.exists(self.imgPath):
+            self.showImage = not self.showImage
+            self.setColors()
+            self.resize(event)
+    def redraw(self):
+        start = pi/2
+        step = pi/6
+        for i in range(12):
+            angle = start - i*step
+            x, y = cos(angle), sin(angle)
+            self.paintcircle(x, y)
+        self.painthms()
+        if not self.showImage:
+            self.paintcircle(0, 0)
