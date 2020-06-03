@@ -152,3 +152,31 @@ class clock:
     def poll(self):
         self.redraw()
         self.root.after(200, self.poll)
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+    if len(argv)>2:
+        try:
+            deltahours = int(argv[1])
+            sImage = (argv[2] == 'True')
+            w = int(argv[3])
+            h = int(argv[4])
+            t = (argv[5] == 'True')
+        except ValueError:
+            print("A timezone is expected")
+            return 1
+    else:
+        deltahours = 3
+        sImage = True
+        w = h = 400
+        t = False
+
+    root = Tk()
+    root.geometry('+0+0')
+    clock(root, deltahours, sImage, w, h, t)
+
+    root.mainloop()
+
+if __name__ == '__main__':
+    sys.exit(main())
