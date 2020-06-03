@@ -130,3 +130,25 @@ class clock:
         self.painthms()
         if not self.showImage:
             self.paintcircle(0, 0)
+    def painthms(self):
+        self.canvas.delete(self._ALL)
+        T = datetime.timetuple(datetime.utcnow() - self.delta)
+        x, x, x, h, m, s, x, x, x = T
+        self.root.title('%02i:%02i:%02i' % (h, m, s))
+        angle = pi/2 - pi/6 * (h+m/60.0)
+        x, y = cos(angle)*0.70, sin(angle)*0.70
+        scl = self.canvas.create_line
+        scl(self.T.windowToViewport(0, 0, x, y), fill=self.timecolor, tag=self._ALL, width=self.pad/3)
+        angle = pi/2 - pi/30*(m+s/60.0)
+        x, y = cos(angle)*0.90, sin(angle)*0.90
+        scl(self.T.windowToViewport(0, 0, x, y), fill=self.timecolor, tag=self._ALL, width=self.pad/5)
+        angle = pi / 2 - pi / 30 * s
+        x, y= cos(angle)*0.95, sin(angle)*0.95
+        scl(self.T.windowToViewport(0, 0, x, y), fill=self.timecolor, tag=self._ALL, arrow='last')
+    def paintcircle(self, x, y):
+        ss = self.circlesize/2.0
+        sco = self.canvas.create_oval
+        sco(self.T.windowToViewport(-ss+x, -ss+y, ss+x, ss+y), fill=self.circlecolor)
+    def poll(self):
+        self.redraw()
+        self.root.after(200, self.poll)
